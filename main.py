@@ -1,12 +1,34 @@
 from fastapi import FastAPI # Importing FastAPI class from fastapi module
 import uvicorn
-from models import IndianStates, states
+from models import IndianStates, states, Student, students
 
 app = FastAPI() #Instance Creation
 
 @app.get('/') #Defining Method Type (GET, POTS, PUT DELETE) & url path
 async def home():
     return {"msg": "Hello World"}
+
+@app.get('/students')
+async def show_students():
+    return students
+
+@app.get('/students/{enrollId}')
+async def show_student(enrollId: int):
+    return students.get(enrollId)
+
+@app.post('/students')
+async def create_student(student: Student):
+    students[student.enrollId] = student.model_dump()
+    return student
+
+@app.put('/students/{enrollId}')
+async def update_student(enrollId: int, student: Student):
+    students[enrollId] = student
+    return student
+
+@app.delete('/students/{enrollId}')
+async def delete_student(enrollId: int):
+    return students.pop(enrollId)
 
 @app.get('/availaibility/{state}') # An Example where User can select the particular states from enum and then we can return list of cities in that State
 async def available_cities(state: IndianStates, offset: int = 0, limit: int = 100): #Tried mimic Pagination where the cities will be shown from offset to next limit values
