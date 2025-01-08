@@ -54,4 +54,3 @@ async def available_cities(state: IndianStates, offset: int = 0, limit: int = 10
     return {"cities": states[state][offset: offset + limit], "success": True}, 200
 
 uvicorn.run(app) #Running Application using uvicorn
-#Testing CVS
